@@ -1,0 +1,25 @@
+<%- include("partials/head") %> 
+  <body>
+    <%- include("partials/navbar") %> 
+    <div class="container">
+    <% users.forEach((data)=> { %> 
+      <% if(data.name) { %>
+        <div class="card mt-1 mb-2" style="width: 18rem;">
+          <div class="card-header">
+            <%= data.name %>
+          </div>
+          <div class="card-body">
+            <% if(data.phn) { %> 
+              <p class="card-text"> <%= data.phn %> </p>
+            <% } %>
+            <% if(data.tel){ %>  
+              <p class="card-text"> <%= data.tel %> </p>
+            <% } %>  
+          </div>
+        </div>
+      <% } %>
+    <% }) %>
+      </div>
+
+  </body>
+</html>

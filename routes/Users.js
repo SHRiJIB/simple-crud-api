@@ -1,39 +1,27 @@
 const express = require("express");
-const { db } = require("../firebase/config.js");
+
+const {
+  addUser,
+  getAllUser,
+  getOneUser,
+  updateUser,
+  deleteUser,
+} = require("../controllers/user.js");
+
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  const userRef = db.collection("users").doc("srijibK");
-  const user = await userRef.get();
+//fetching all users details
+router.get("/", getAllUser);
 
-  if (!user.exists) res.send("no user found");
-  else res.send(user.data());
-});
+//fetching one user details
+router.get("/:id", getOneUser);
 
-router.get("/all", async (req, res) => {
-  const usersRef = db.collection("users");
-  const snap = await usersRef.get();
+//adding a user data to database
+router.post("/", addUser);
 
-  snap.forEach((element) => {
-    console.log(element.data());
-  });
-  res.send("Found");
-});
+//update the details of one user
+router.patch("/:id", updateUser);
 
-router.post("/", async (req, res) => {
-  var user = {
-    name: "srijibK",
-    tel: "7679842307",
-  };
-  const userRef = db.collection("users").doc(user.name);
-  await userRef
-    .set(user)
-    .then(() => {
-      res.send("POST ROUTE REACHED!");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
+//delete a user from database
+router.delete("/:id", deleteUser);
 module.exports = router;
