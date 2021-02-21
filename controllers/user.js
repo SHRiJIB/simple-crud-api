@@ -3,7 +3,7 @@ const { db } = require("../firebase/config.js");
 const { v4 } = require("uuid");
 
 const addUser = async (req, res) => {
-  const user = req.body;
+  const user = req.body; //data coming from user input
   const uid = v4();
 
   const userWithID = { ...user, id: uid };
@@ -37,8 +37,19 @@ const getAllUser = async (req, res) => {
   snap.forEach((element) => {
     users.push(element.data());
   });
-
   res.render("Users", { users });
+};
+
+const goToEditPage = async (req, res) => {
+  const { id } = req.params;
+  const usersRef = db.collection("users");
+  const snap = await usersRef.get();
+  var user;
+  snap.forEach((u) => {
+    if (u.data().id == id) user = u.data();
+  });
+
+  res.render("EditPage", { user });
 };
 const updateUser = async (req, res) => {
   const { id } = req.params;
@@ -52,9 +63,7 @@ const updateUser = async (req, res) => {
       .update({
         tel: tel,
       })
-      .then(() => {
-        console.log("tel updated");
-      })
+
       .catch((err) => {
         console.log(err);
       });
@@ -66,15 +75,12 @@ const updateUser = async (req, res) => {
       .update({
         name: name,
       })
-      .then(() => {
-        console.log("name updated");
-      })
+
       .catch((err) => {
         console.log(err);
       });
   }
-
-  res.send("Details Updated");
+  res.redirect("/user");
 };
 const deleteUser = async (req, res) => {
   const { id } = req.params;
@@ -83,14 +89,19 @@ const deleteUser = async (req, res) => {
   await usersRef
     .doc(id)
     .delete()
-    .then(() => {
-      console.log(`User with id ${id} deleted from the db`);
-    })
+
     .catch((err) => {
       console.log(err);
     });
 
-  res.send(`User with id ${id} deleted from the db`);
+  res.redirect("/user");
 };
 
-module.exports = { addUser, getAllUser, getOneUser, updateUser, deleteUser };
+module.exports = {
+  goToEditPage,
+  addUser,
+  getAllUser,
+  getOneUser,
+  updateUser,
+  deleteUser,
+};

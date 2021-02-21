@@ -1,0 +1,18 @@
+<%- include("partials/head") %> 
+  <body>
+    <%- include("partials/navbar") %> 
+    <h1>Edit User's details</h1>
+    <form method="POST" action="/user/edit/update/<%= user.id %>?_method=PATCH" >
+      <div class="mb-2">
+        <label for="name" class="form-label">Name:</label>
+        <input type="text" class="form-control" id="name" value="<%= user.name %> " name="name"  placeholder="Name">
+      </div>
+      <div class="mb-2">
+        <label for="tel" class="form-label">Tel:</label>
+        <input type="tel" class="form-control" id="tel" name="tel" value="<%= user.tel %>" placeholder="Phone No.">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+   
+  </body>
+</html>

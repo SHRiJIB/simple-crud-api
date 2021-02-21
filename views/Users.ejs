@@ -2,24 +2,32 @@
   <body>
     <%- include("partials/navbar") %> 
     <div class="container">
-    <% users.forEach((data)=> { %> 
-      <% if(data.name) { %>
-        <div class="card mt-1 mb-2" style="width: 18rem;">
-          <div class="card-header">
-            <%= data.name %>
-          </div>
-          <div class="card-body">
-            <% if(data.phn) { %> 
-              <p class="card-text"> <%= data.phn %> </p>
+      <% if(users.length) { %>
+        <% users.forEach((data)=> { %> 
+            <% if(data.name) { %>
+              <div class="card mt-1 mb-2" style="width: 18rem;">
+                <div class="card-header">
+                  <%= data.name %>
+                </div>
+                <div class="card-body">
+                  <% if(data.tel){ %>  
+                    <p class="card-text"> <%= data.tel %> </p>
+                  <% } %> 
+                  <div class="btn btn-group">
+                    <a role="button" class="btn btn-primary" href="/user/edit/<%= data.id %>">Edit</a> 
+                    <form method="POST" action="/user/<%= data.id %>?_method=DELETE">
+                      <button class="btn btn-danger">Delete</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
             <% } %>
-            <% if(data.tel){ %>  
-              <p class="card-text"> <%= data.tel %> </p>
-            <% } %>  
-          </div>
-        </div>
-      <% } %>
-    <% }) %>
-      </div>
+        <% }) %>
+      <% } else { %>
+        <h1>No Contacts!!</h1> 
+        <a  role="button" href="/" class="btn btn-primary">Add New</a>
+      <% } %>  
+    </div>
 
   </body>
 </html>
